@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Catene Montuose</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;padding:20px}
+.container{max-width:480px;margin:0 auto}
+h1{font-family:'Playfair Display',serif;font-size:28px;text-align:center;margin-bottom:4px;letter-spacing:1px}
+.subtitle{text-align:center;color:#a0b4c8;font-size:14px;margin-bottom:24px}
+.card{background:rgba(255,255,255,0.07);border-radius:20px;padding:28px;margin-bottom:20px;transition:all 0.3s}
+.card-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.card-emoji{font-size:40px}
+.card-title-it{font-family:'Playfair Display',serif;font-size:26px;font-weight:700}
+.card-title-en{font-size:18px;color:#a0c4ff;font-weight:600}
+.row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
+.row-label{font-size:12px;color:#7090a8;text-transform:uppercase;letter-spacing:0.5px}
+.row-value{font-size:14px;color:#e0e8f0}
+.curiosita{background:rgba(255,255,255,0.06);border-radius:10px;padding:12px;margin-top:8px}
+.curiosita-label{font-size:13px;color:#ffd700}
+.curiosita-text{font-size:13px;color:#ddd;line-height:1.5}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.nav-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:10px;padding:8px 16px;cursor:pointer;font-size:13px;font-family:'Nunito',sans-serif}
+.nav-btn:disabled{background:rgba(255,255,255,0.05);color:#555;cursor:default}
+.nav-counter{color:#a0b4c8;font-size:14px}
+.dots{display:flex;justify-content:center;gap:6px;margin-bottom:28px}
+.dot{width:10px;height:10px;border-radius:50%;border:none;cursor:pointer;transition:all 0.2s}
+.quiz-btns{display:flex;gap:10px;margin-top:8px}
+.quiz-section-label{text-align:center;color:#a0b4c8;font-size:13px;margin-bottom:12px}
+.quiz-btn{flex:1;border:none;color:#fff;border-radius:12px;padding:12px 8px;cursor:pointer;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;line-height:1.4}
+/* Quiz screen */
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.back-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-family:'Nunito',sans-serif}
+.quiz-counter{color:#ffd700;font-weight:700}
+.dir-label{color:#a0b4c8;font-size:13px}
+.progress-bar{background:rgba(255,255,255,0.1);border-radius:4px;height:6px;margin-bottom:28px}
+.progress-fill{background:linear-gradient(90deg,#4a90d9,#a78bfa);border-radius:4px;height:6px;transition:width 0.4s}
+.question-card{background:rgba(255,255,255,0.07);border-radius:20px;padding:28px;margin-bottom:20px;text-align:center}
+.question-hint{color:#a0b4c8;font-size:13px;margin-bottom:8px}
+.question-emoji{font-size:42px}
+.question-text{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;margin-top:8px}
+.options{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.option-btn{border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.07);color:#fff;border-radius:12px;padding:14px 20px;cursor:pointer;font-size:16px;font-weight:600;font-family:'Nunito',sans-serif;text-align:left;transition:all 0.2s}
+.option-btn.correct{background:rgba(92,184,92,0.25);border:2px solid #5cb85c}
+.option-btn.wrong{background:rgba(220,53,69,0.25);border:2px solid #dc3545}
+.option-btn:disabled{cursor:default}
+.next-btn{width:100%;background:linear-gradient(135deg,#4a90d9,#a78bfa);border:none;color:#fff;border-radius:14px;padding:16px;cursor:pointer;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif}
+/* Result screen */
+.result-center{text-align:center;margin-bottom:28px}
+.result-emoji{font-size:64px;margin-bottom:8px}
+.result-title{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:4px}
+.result-score{font-size:18px;color:#a0b4c8;margin-bottom:16px}
+.voto-box{display:inline-block;border-radius:20px;padding:12px 36px}
+.voto-label{color:#a0b4c8;font-size:13px}
+.voto-num{font-size:56px;font-weight:900;line-height:1}
+.result-msg{font-weight:700;font-size:16px;margin-top:14px}
+.recap{background:rgba(255,255,255,0.06);border-radius:16px;padding:20px;margin-bottom:20px}
+.recap-title{font-size:14px;color:#a0b4c8;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.recap-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:10px;margin-bottom:6px}
+.recap-row.ok{background:rgba(92,184,92,0.12);border:1px solid #5cb85c44}
+.recap-row.ko{background:rgba(220,53,69,0.12);border:1px solid #dc354544}
+.recap-question{font-size:14px;font-weight:600}
+.recap-answer{font-size:13px}
+.recap-answer.ok{color:#5cb85c}
+.recap-answer.ko{color:#dc3545}
+.result-btns{display:flex;gap:10px}
+.retry-btn{flex:1;background:linear-gradient(135deg,#4a90d9,#a78bfa);border:none;color:#fff;border-radius:12px;padding:14px;cursor:pointer;font-size:15px;font-weight:700;font-family:'Nunito',sans-serif}
+.home-btn{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:12px;padding:14px;cursor:pointer;font-size:15px;font-weight:700;font-family:'Nunito',sans-serif}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- CARDS SCREEN -->
+<div id="screen-cards">
+  <h1>🗺️ Catene Montuose</h1>
+  <p class="subtitle">Studia le schede, poi fai il quiz!</p>
+  <div class="card" id="mountain-card"></div>
+  <div class="nav">
+    <button class="nav-btn" id="btn-prev" onclick="prevCard()">◀ Precedente</button>
+    <span class="nav-counter" id="card-counter"></span>
+    <button class="nav-btn" id="btn-next" onclick="nextCard()">Successiva ▶</button>
+  </div>
+  <div class="dots" id="dots"></div>
+  <p class="quiz-section-label">Pronta per il quiz?</p>
+  <div class="quiz-btns">
+    <button class="quiz-btn" style="background:linear-gradient(135deg,#4a90d9cc,#4a90d988);border:1px solid #4a90d9" onclick="startQuiz('it2en')">🇮🇹 → 🇬🇧 Italiano → Inglese</button>
+    <button class="quiz-btn" style="background:linear-gradient(135deg,#e67e22cc,#e67e2288);border:1px solid #e67e22" onclick="startQuiz('en2it')">🇬🇧 → 🇮🇹 Inglese → Italiano</button>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="screen-quiz" class="hidden">
+  <div class="quiz-header">
+    <button class="back-btn" onclick="showCards()">← Schede</button>
+    <span class="quiz-counter" id="quiz-counter"></span>
+    <span class="dir-label" id="dir-label"></span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="question-card" id="question-card"></div>
+  <div class="options" id="options"></div>
+  <button class="next-btn hidden" id="btn-next-q" onclick="nextQuestion()">Prossima domanda →</button>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="screen-result" class="hidden">
+  <div class="result-center">
+    <div class="result-emoji">🏆</div>
+    <h2 class="result-title">Risultato finale</h2>
+    <div class="result-score" id="result-score"></div>
+    <div class="voto-box" id="voto-box">
+      <div class="voto-label">VOTO</div>
+      <div class="voto-num" id="voto-num"></div>
+    </div>
+    <p class="result-msg" id="result-msg"></p>
+  </div>
+  <div class="recap">
+    <div class="recap-title">Riepilogo risposte</div>
+    <div id="recap-list"></div>
+  </div>
+  <div class="result-btns">
+    <button class="retry-btn" onclick="retryQuiz()">🔄 Riprova quiz</button>
+    <button class="home-btn" onclick="showCards()">📚 Torna alle schede</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const mountains = [
+  {it:"Alpi",en:"Alps",emoji:"🏔️",color:"#4a90d9",dove:"Europa centrale e meridionale",paesi:"Francia, Svizzera, Italia, Austria, Slovenia",cima:"Monte Bianco (4.808 m)",curiosita:"La catena più alta d'Europa occidentale. Separa la Pianura Padana dall'Europa centrale."},
+  {it:"Appennini",en:"Apennines",emoji:"🌿",color:"#5cb85c",dove:"Penisola italiana, da nord a sud",paesi:"Italia",cima:"Corno Grande (2.912 m)",curiosita:"La 'spina dorsale' d'Italia: attraversa tutta la penisola per circa 1.200 km."},
+  {it:"Pirenei",en:"Pyrenees",emoji:"⛰️",color:"#e67e22",dove:"Confine tra Francia e Spagna",paesi:"Francia, Spagna, Andorra",cima:"Aneto (3.404 m)",curiosita:"Formano una naturale barriera tra la penisola iberica e il resto dell'Europa."},
+  {it:"Alpi Scandinave",en:"Scandinavian Mountains",emoji:"❄️",color:"#5dade2",dove:"Penisola scandinava",paesi:"Norvegia, Svezia",cima:"Galdhøpiggen (2.469 m)",curiosita:"Chiamate anche 'Scandes', separano la Norvegia dalla Svezia e danno origine ai famosi fiordi."},
+  {it:"Balcani",en:"Balkans (Balkan Mountains)",emoji:"🌄",color:"#8e44ad",dove:"Europa sudorientale",paesi:"Bulgaria, Serbia",cima:"Botev (2.376 m)",curiosita:"Danno il nome all'intera penisola balcanica. 'Balkan' in turco significa 'montagna boscosa'."},
+  {it:"Carpazi",en:"Carpathians",emoji:"🦅",color:"#27ae60",dove:"Europa centrale e orientale",paesi:"Rep. Ceca, Slovacchia, Polonia, Ucraina, Romania",cima:"Gerlachovský štít (2.655 m)",curiosita:"La catena più lunga d'Europa dopo le Alpi: circa 1.500 km. Famosa per le foreste e la leggenda di Dracula!"},
+  {it:"Caucaso",en:"Caucasus",emoji:"🏔️",color:"#c0392b",dove:"Tra Europa e Asia",paesi:"Russia, Georgia, Armenia, Azerbaijan",cima:"Monte Elbrus (5.642 m)",curiosita:"Il Monte Elbrus è il punto più alto d'Europa! Il Caucaso è il confine naturale tra Europa e Asia."},
+  {it:"Alpi Dinariche",en:"Dinaric Alps",emoji:"🌊",color:"#2980b9",dove:"Costa adriatica orientale",paesi:"Slovenia, Croazia, Bosnia, Montenegro, Albania",cima:"Maja e Korabit (2.764 m)",curiosita:"Si estendono lungo la costa adriatica per circa 650 km. Caratterizzate da paesaggi carsici spettacolari."}
+];
+
+let currentCard = 0;
+let quizQuestions = [];
+let quizIdx = 0;
+let quizScore = 0;
+let quizAnswers = [];
+let quizSelected = null;
+let quizDirection = 'it2en';
+
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
+
+function renderCard(){
+  const m = mountains[currentCard];
+  document.getElementById('mountain-card').style.border=`2px solid ${m.color}55`;
+  document.getElementById('mountain-card').style.boxShadow=`0 0 30px ${m.color}33`;
+  document.getElementById('mountain-card').innerHTML=`
+    <div class="card-header">
+      <span class="card-emoji">${m.emoji}</span>
+      <div>
+        <div class="card-title-it" style="color:${m.color}">${m.it}</div>
+        <div class="card-title-en">${m.en}</div>
+      </div>
+    </div>
+    <div class="row"><span>📍</span><div><span class="row-label">Dove si trova: </span><span class="row-value">${m.dove}</span></div></div>
+    <div class="row"><span>🌍</span><div><span class="row-label">Paesi: </span><span class="row-value">${m.paesi}</span></div></div>
+    <div class="row"><span>🏆</span><div><span class="row-label">Cima più alta: </span><span class="row-value">${m.cima}</span></div></div>
+    <div class="curiosita"><span class="curiosita-label">💡 Lo sapevi? </span><span class="curiosita-text">${m.curiosita}</span></div>
+  `;
+  document.getElementById('card-counter').textContent=`${currentCard+1} / ${mountains.length}`;
+  document.getElementById('btn-prev').disabled=currentCard===0;
+  document.getElementById('btn-next').disabled=currentCard===mountains.length-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.style.background=i===currentCard?mountains[i].color:'rgba(255,255,255,0.2)';
+  });
+}
+
+function buildDots(){
+  const c=document.getElementById('dots');
+  c.innerHTML='';
+  mountains.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='dot';
+    d.onclick=()=>{currentCard=i;renderCard()};
+    c.appendChild(d);
+  });
+}
+
+function prevCard(){if(currentCard>0){currentCard--;renderCard()}}
+function nextCard(){if(currentCard<mountains.length-1){currentCard++;renderCard()}}
+
+function showCards(){
+  document.getElementById('screen-cards').classList.remove('hidden');
+  document.getElementById('screen-quiz').classList.add('hidden');
+  document.getElementById('screen-result').classList.add('hidden');
+}
+
+function startQuiz(dir){
+  quizDirection=dir;
+  quizIdx=0;quizScore=0;quizAnswers=[];quizSelected=null;
+  const shuffled=shuffle(mountains);
+  quizQuestions=shuffled.map(m=>{
+    const correct=dir==='it2en'?m.en:m.it;
+    const wrong=shuffle(mountains.filter(x=>x.it!==m.it)).slice(0,3).map(x=>dir==='it2en'?x.en:x.it);
+    return{mountain:m,question:dir==='it2en'?m.it:m.en,correct,options:shuffle([correct,...wrong])};
+  });
+  document.getElementById('screen-cards').classList.add('hidden');
+  document.getElementById('screen-result').classList.add('hidden');
+  document.getElementById('screen-quiz').classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=quizQuestions[quizIdx];
+  document.getElementById('quiz-counter').textContent=`Domanda ${quizIdx+1} / ${quizQuestions.length}`;
+  document.getElementById('dir-label').textContent=quizDirection==='it2en'?'🇮🇹 → 🇬🇧':'🇬🇧 → 🇮🇹';
+  document.getElementById('progress-fill').style.width=`${(quizIdx/quizQuestions.length)*100}%`;
+  document.getElementById('question-card').innerHTML=`
+    <p class="question-hint">${quizDirection==='it2en'?'Come si dice in inglese?':'Come si dice in italiano?'}</p>
+    <div class="question-emoji">${q.mountain.emoji}</div>
+    <div class="question-text" style="color:${q.mountain.color}">${q.question}</div>
+  `;
+  const optDiv=document.getElementById('options');
+  optDiv.innerHTML='';
+  q.options.forEach(opt=>{
+    const b=document.createElement('button');
+    b.className='option-btn';
+    b.textContent=opt;
+    b.onclick=()=>selectOption(opt,b);
+    optDiv.appendChild(b);
+  });
+  document.getElementById('btn-next-q').classList.add('hidden');
+  document.getElementById('btn-next-q').textContent=quizIdx===quizQuestions.length-1?'Vedi il risultato 🏆':'Prossima domanda →';
+  quizSelected=null;
+}
+
+function selectOption(opt,btn){
+  if(quizSelected)return;
+  quizSelected=opt;
+  const q=quizQuestions[quizIdx];
+  const correct=opt===q.correct;
+  if(correct)quizScore++;
+  quizAnswers.push({question:q.question,correct:q.correct,chosen:opt,ok:correct});
+  document.querySelectorAll('.option-btn').forEach(b=>{
+    if(b.textContent===q.correct){b.classList.add('correct');b.textContent+=' ✅';}
+    else if(b.textContent===opt&&!correct){b.classList.add('wrong');b.textContent+=' ❌';}
+    b.disabled=true;
+  });
+  document.getElementById('btn-next-q').classList.remove('hidden');
+}
+
+function nextQuestion(){
+  if(quizIdx===quizQuestions.length-1){showResult();}
+  else{quizIdx++;renderQuestion();}
+}
+
+function showResult(){
+  document.getElementById('screen-quiz').classList.add('hidden');
+  document.getElementById('screen-result').classList.remove('hidden');
+  const pct=Math.round((quizScore/quizQuestions.length)*100);
+  let voto,colore,msg;
+  if(pct>=95){voto='10';colore='#ffd700';msg='Perfetto! Sei una campionessa! 🏆';}
+  else if(pct>=85){voto='9';colore='#5cb85c';msg='Ottimo risultato! Quasi perfetta! 🌟';}
+  else if(pct>=75){voto='8';colore='#4a90d9';msg='Molto bene! Ancora un po\' di pratica! 😊';}
+  else if(pct>=65){voto='7';colore='#e67e22';msg='Bene! Ripassiamo qualcosina insieme! 📚';}
+  else if(pct>=55){voto='6';colore='#f0ad4e';msg='Sufficiente. Ripassiamo ancora! 💪';}
+  else{voto='5';colore='#dc3545';msg='Dai, si ripassa e poi si riprova! 🔄';}
+  document.getElementById('result-score').textContent=`${quizScore} risposte corrette su ${quizQuestions.length}`;
+  document.getElementById('voto-box').style.background=`${colore}22`;
+  document.getElementById('voto-box').style.border=`3px solid ${colore}`;
+  document.getElementById('voto-num').style.color=colore;
+  document.getElementById('voto-num').textContent=voto;
+  document.getElementById('result-msg').style.color=colore;
+  document.getElementById('result-msg').textContent=msg;
+  const list=document.getElementById('recap-list');
+  list.innerHTML='';
+  quizAnswers.forEach(a=>{
+    const row=document.createElement('div');
+    row.className=`recap-row ${a.ok?'ok':'ko'}`;
+    row.innerHTML=`<span class="recap-question">${a.question}</span><span class="recap-answer ${a.ok?'ok':'ko'}">${a.ok?'✅ ':'❌ '}${a.correct}</span>`;
+    list.appendChild(row);
+  });
+}
+
+function retryQuiz(){startQuiz(quizDirection)}
+
+// Init
+buildDots();
+renderCard();
+</script>
+</body>
+</html>
